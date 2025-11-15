@@ -7,27 +7,29 @@
 # Installation: Copy to .claude/hooks/UserPromptSubmit
 
 cat <<'EOF'
-INSTRUCTION: MANDATORY SKILL EVALUATION REQUIRED
+INSTRUCTION: MANDATORY SKILL ACTIVATION SEQUENCE
 
-Before proceeding with ANY implementation:
+Step 1 - EVALUATE (do this in your response):
+For each skill in <available_skills>, state: [skill-name] - YES/NO - [reason]
 
-1. List EVERY skill from <available_skills>
-2. For EACH skill, explicitly state:
-   - Skill name
-   - Is it relevant to this task? (YES/NO)
-   - One sentence explaining why/why not
+Step 2 - ACTIVATE (do this immediately after Step 1):
+IF any skills are YES → Use Skill(skill-name) tool for EACH relevant skill NOW
+IF no skills are YES → State "No skills needed" and proceed
 
-3. After evaluation, if ANY skills are relevant:
-   - Use Skill() tool to activate ALL relevant skills
-   - Wait for skill prompts to load
-   - THEN proceed with implementation
+Step 3 - IMPLEMENT:
+Only after Step 2 is complete, proceed with implementation.
 
-4. If NO skills are relevant:
-   - Explicitly state "No skills are relevant because [reason]"
-   - THEN proceed with implementation
+CRITICAL: You MUST call Skill() tool in Step 2. Do NOT skip to implementation.
+The evaluation (Step 1) is WORTHLESS unless you ACTIVATE (Step 2) the skills.
 
-DO NOT SKIP THIS EVALUATION.
-DO NOT START CODING UNTIL SKILLS ARE EVALUATED AND ACTIVATED.
+Example of correct sequence:
+- research: NO - not a research task
+- svelte5-runes: YES - need reactive state
+- sveltekit-structure: YES - creating routes
 
-This forces you to consciously check every available skill against the task requirements.
+[Then IMMEDIATELY use Skill() tool:]
+> Skill(svelte5-runes)
+> Skill(sveltekit-structure)
+
+[THEN and ONLY THEN start implementation]
 EOF
