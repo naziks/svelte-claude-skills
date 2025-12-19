@@ -6,11 +6,15 @@
 - Configuration (Experimental)
 - Async Svelte Integration
 - Available Functions (command, query, form, prerender)
+- Query Caching & Refresh
+- Single-Flight Mutations (.updates)
 - Validation
+- Programmatic Validation (invalid)
 - Serialization Rules
 - Access Request Context
 - Error Handling
 - File Naming Convention
+- Gotchas
 - Performance Tips
 - Caching Strategies
 - Common Patterns
@@ -37,15 +41,22 @@ export default {
 	kit: {
 		experimental: {
 			remoteFunctions: true,
-			asyncSvelte: true, // enables await anywhere in components
+		},
+	},
+	compilerOptions: {
+		experimental: {
+			async: true, // enables await anywhere in components
 		},
 	},
 };
 ```
 
+**Note:** `async` goes in `compilerOptions.experimental`, NOT in
+`kit.experimental`.
+
 ## Async Svelte Integration
 
-With `asyncSvelte: true`, you can `await` anywhere in components:
+With `async: true`, you can `await` anywhere in components:
 
 ```svelte
 <script>
@@ -108,6 +119,9 @@ export const create_post = command(
 );
 ```
 
+**Important:** Commands cannot run during render - only call from
+event handlers.
+
 ### query()
 
 **Purpose:** Repeated reads, data fetching (supports batching)
@@ -151,19 +165,25 @@ export const get_user = query(
 {/each}
 ```
 
-**Query methods:**
+**Query properties and methods:**
 
 ```typescript
-// Manually refresh data
-query.refresh();
+const query = get_users();
 
-// Set data directly (avoid refetch after mutation returns new data)
-query.set(newData);
+// Properties (reactive)
+query.current; // Current data value
+query.loading; // Boolean loading state
+query.error; // Error if failed
+
+// Methods
+await query.refresh(); // Re-fetch from server, bypassing cache
+query.set(newData); // Update cached value without refetch
 ```
 
 #### query.batch()
 
-Batch queries within same microtask into single network request:
+Batch queries within same microtask into single network request.
+**Returns a resolver function**, not data directly:
 
 ```typescript
 // weather.remote.ts
@@ -171,8 +191,13 @@ export const get_weather = query.batch(
 	v.string(), // city name
 	async (cities) => {
 		// cities is array - one DB call for all
-		return await db.weather.findMany({ city: { in: cities } });
-	}
+		const data = await db.weather.findMany({
+			city: { in: cities },
+		});
+		// Return a RESOLVER FUNCTION that maps input → output
+		const lookup = new Map(data.map((w) => [w.city, w]));
+		return (city) => lookup.get(city);
+	},
 );
 ```
 
@@ -204,12 +229,12 @@ export const create_post = form(
 	v.object({
 		title: v.pipe(v.string(), v.minLength(1)),
 		content: v.string(),
-		published: v.boolean(),
+		published: v.optional(v.boolean()), // Use optional() for checkboxes!
 	}),
 	async ({ title, content, published }) => {
 		const post = await db.posts.create({ title, content, published });
 		return { id: post.id };
-	}
+	},
 );
 ```
 
@@ -263,8 +288,8 @@ export const create_post = form(
 <label>
 	Title
 	<input {...create_post.fields.title.as('text')} />
-	{#if create_post.fields.title.error}
-		<span class="error">{create_post.fields.title.error}</span>
+	{#if create_post.fields.title.issues()}
+		<span class="error">{create_post.fields.title.issues()}</span>
 	{/if}
 </label>
 ```
@@ -273,7 +298,7 @@ export const create_post = form(
 
 ```typescript
 // Get current value
-const currentTitle = create_post.fields.title.value;
+const currentTitle = create_post.fields.title.value();
 
 // Set value programmatically
 create_post.fields.title.set('New Title');
@@ -282,19 +307,21 @@ create_post.fields.title.set('New Title');
 create_post.reset();
 ```
 
+**Sensitive data:** Prefix field names with underscore (e.g.,
+`_password`) to prevent repopulation after failed submission.
+
 **Enhanced mode (custom JS handling):**
 
 ```svelte
 <form
-	{...create_post}
-	use:create_post.enhance={async ({ submit }) => {
+	{...create_post.enhance(async ({ form, data, submit }) => {
 		const result = await submit();
 
 		if (result.id) {
 			toast.success('Post created!');
 			goto(`/posts/${result.id}`);
 		}
-	}}
+	})}
 >
 	<!-- inputs -->
 </form>
@@ -317,7 +344,82 @@ export const get_build_stats = prerender(async () => {
 });
 ```
 
-Use for static sites where data shouldn't change after build.
+**With specific inputs to prerender:**
+
+```typescript
+export const get_post = prerender(
+	v.object({ slug: v.string() }),
+	async ({ slug }) => {
+		return await db.posts.findBySlug(slug);
+	},
+	{
+		inputs: () => [{ slug: 'hello' }, { slug: 'world' }],
+	},
+);
+```
+
+**Allow runtime calls with non-prerendered args:**
+
+```typescript
+export const get_post = prerender(schema, handler, {
+	inputs: () => [...],
+	dynamic: true, // Allow runtime args not in inputs
+});
+```
+
+## Query Caching & Refresh
+
+**Queries are cached during page lifetime:**
+
+```typescript
+getPosts() === getPosts(); // true - same reference!
+```
+
+To get fresh data after mutations:
+
+```typescript
+// Store query reference
+const postsQuery = get_posts();
+
+// Initial fetch
+const posts = await postsQuery;
+
+// Later, refresh to bypass cache
+await postsQuery.refresh();
+const freshPosts = postsQuery.current;
+
+// Or update cache directly without refetch
+postsQuery.set(newPostsArray);
+```
+
+## Single-Flight Mutations (.updates)
+
+After a command, update related queries in a single round-trip:
+
+```typescript
+// Basic: refresh query after command
+await addTodo(item).updates(getTodos());
+
+// Multiple queries
+await addTodo(item).updates(getTodos(), getStats());
+
+// Optimistic update with .withOverride()
+await addLike(postId).updates(
+	getLikes(postId).withOverride((count) => count + 1),
+);
+```
+
+**Server-side refresh:** Inside form/command handlers, call
+`query.set()` to update cache without client refetch:
+
+```typescript
+export const add_item = command(schema, async (data) => {
+	const item = await db.items.create(data);
+	// Update the items query cache on the server
+	get_items.set(await db.items.findAll());
+	return item;
+});
+```
 
 ## Validation
 
@@ -372,6 +474,40 @@ export const flexible_action = command.unchecked(async (input) => {
 });
 ```
 
+## Programmatic Validation (invalid)
+
+Use `invalid()` for server-side validation beyond schema:
+
+```typescript
+import { invalid } from '@sveltejs/kit';
+import { form } from '$app/server';
+
+export const checkout = form(schema, async (data) => {
+	const stock = await db.getStock(data.productId);
+
+	if (data.quantity > stock) {
+		// Field-specific error
+		invalid.quantity('Not enough stock available');
+	}
+
+	if (!await validateCoupon(data.coupon)) {
+		// Another field error
+		invalid.coupon('Invalid or expired coupon');
+	}
+
+	// Form-level error (not tied to specific field)
+	if (await isBlacklisted(data.email)) {
+		invalid('This account cannot place orders');
+	}
+
+	// If any invalid() called, form submission fails
+	return await processOrder(data);
+});
+```
+
+**Custom error responses:** Implement `handleValidationError` hook in
+`src/hooks.server.js` to customize validation error messages.
+
 ## Serialization Rules
 
 **Can serialize:**
@@ -423,6 +559,14 @@ export const get_session = command(async () => {
 });
 ```
 
+**Limitations:**
+
+- Cannot set headers (except cookies in form/command)
+- `route`, `params`, `url` relate to the calling page, not the
+  endpoint
+- **Never use for authorization checks** - always verify auth
+  server-side
+
 ## Error Handling
 
 Thrown errors are serialized and re-thrown on the client:
@@ -450,14 +594,15 @@ try {
 ## File Naming Convention
 
 Use `*.remote.ts` (or `.js`) suffix. These files can live **anywhere**
-in your project - not just in routes.
+in your project **except `src/lib/server/`**.
 
 ```
 src/
   lib/
     users.remote.ts     ← Remote functions (can import anywhere)
     posts.remote.ts
-    database.server.ts  ← Server-only utilities (no remote calls)
+    server/
+      database.ts       ← Server-only (NO .remote files here!)
     utils.ts            ← Universal utilities
   routes/
     blog/
@@ -468,18 +613,42 @@ The `.remote` suffix makes server boundary obvious - you know
 instantly this code runs on server. No confusion about where imports
 execute.
 
+## Gotchas
+
+1. **Queries are cached** - `getPosts() === getPosts()` returns true.
+   Use `.refresh()` to get fresh data.
+
+2. **Commands cannot run during render** - Only call from event
+   handlers, not during component initialization.
+
+3. **Checkboxes need `optional()`** - Unchecked inputs aren't included
+   in FormData. Use `v.optional(v.boolean())` in schema.
+
+4. **No .remote files in src/lib/server/** - They won't work there.
+
+5. **Sensitive field prefix** - Use `_password` to prevent
+   repopulation after failed submission.
+
+6. **Special characters in args** - Use JS object notation;
+   `'nested-key'` style unsupported.
+
+7. **Prerendered functions excluded** - Unless `dynamic: true`, they
+   won't be in server bundle.
+
 ## Performance Tips
 
-1. **Use query() for reads** - Benefits from batching
+1. **Use query() for reads** - Benefits from caching and batching
 2. **Use query.batch()** - When looping, batch into single request
 3. **Return minimal data** - Serialization has overhead
-4. **Use query.set() after mutations** - Avoid refetch when mutation
+4. **Use .updates() after commands** - Single round-trip for
+   mutation + query refresh
+5. **Use query.set() when possible** - Avoid refetch when command
    returns new data
-5. **Await for SSR** - Ensures server rendering, no client waterfall
+6. **Await for SSR** - Ensures server rendering, no client waterfall
 
 ## Caching Strategies
 
-Remote functions don't have built-in caching. Options:
+Remote functions don't have built-in HTTP caching. Options:
 
 **Service Worker + IndexedDB (client-side stale-while-revalidate):**
 
@@ -535,7 +704,14 @@ export const admin_action = command(schema, async (data) => {
 ### Optimistic Updates
 
 ```typescript
-// Client code
+// Using .updates() with .withOverride()
+async function toggleLike(postId: string) {
+	await like_post({ id: postId }).updates(
+		get_likes(postId).withOverride((count) => count + 1),
+	);
+}
+
+// Manual optimistic pattern
 let items = $state([...]);
 
 async function addItem(item) {
@@ -579,12 +755,12 @@ get_post({ id: 'wrong' }); // ❌ Type error - expected number
 
 ## Comparison with Traditional Approaches
 
-| Approach                | Use Case              | Pros                               | Cons                           |
-| ----------------------- | --------------------- | ---------------------------------- | ------------------------------ |
-| Remote Functions        | Component data needs  | Simple, type-safe, component-level | Experimental (as of late 2024) |
-| Form Actions            | Progressive forms     | SEO-friendly, works without JS     | Page-based, less flexible      |
-| API Routes (+server.ts) | Public APIs, webhooks | Full control, RESTful              | More boilerplate               |
-| Load Functions          | Page data             | Automatic, integrated with routing | Page-lifecycle bound           |
+| Approach                | Use Case              | Pros                               | Cons                      |
+| ----------------------- | --------------------- | ---------------------------------- | ------------------------- |
+| Remote Functions        | Component data needs  | Simple, type-safe, component-level | Experimental              |
+| Form Actions            | Progressive forms     | SEO-friendly, works without JS     | Page-based, less flexible |
+| API Routes (+server.ts) | Public APIs, webhooks | Full control, RESTful              | More boilerplate          |
+| Load Functions          | Page data             | Automatic, integrated with routing | Page-lifecycle bound      |
 
 ### Why Remote Functions Over Load Functions?
 

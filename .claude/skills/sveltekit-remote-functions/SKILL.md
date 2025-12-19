@@ -43,7 +43,9 @@ export const delete_user = command(
 - Args/returns must be JSON-serializable
 - Schema validation via StandardSchemaV1 (Valibot/Zod)
 - `getRequestEvent()` available for cookies/headers access
-- **Last verified:** 2025-01-13
+- **Queries are cached** - use `.refresh()` to get fresh data
+- **No .remote files in `src/lib/server/`** - they won't work there
+- **Last verified:** 2025-12-19
 
 <!--
 PROGRESSIVE DISCLOSURE GUIDELINES:
