@@ -78,10 +78,10 @@ Navigate SvelteKit's file-based routing and structure.
 
 ```bash
 # Clone into your Claude skills directory
-git clone https://github.com/yourusername/svelte-claude-skills.git ~/.claude/skills/svelte
+git clone https://github.com/naziks/svelte-claude-skills.git ~/.claude/skills/svelte
 
 # Or clone into a specific project
-git clone https://github.com/yourusername/svelte-claude-skills.git .claude/skills/
+git clone https://github.com/naziks/svelte-claude-skills.git .claude/skills/
 ```
 
 ### Option 2: Symlink individual skills
