@@ -1,0 +1,587 @@
+[
+	{
+		"hook_config": "forced-eval",
+		"total_tests": 24,
+		"activated_count": 19,
+		"correct_count": 18,
+		"activation_rate": 0.7916666666666666,
+		"accuracy_rate": 0.75,
+		"avg_latency_ms": 11871.125,
+		"results": [
+			{
+				"test_id": "hard-001",
+				"hook_config": "forced-eval",
+				"query": "How do I manage state across pages in my SvelteKit app?",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes", "sveltekit-data-flow"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8210
+			},
+			{
+				"test_id": "hard-002",
+				"hook_config": "forced-eval",
+				"query": "I need to fetch data and make it reactive in my Svelte 5 component",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": ["svelte-runes", "sveltekit-data-flow"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8298
+			},
+			{
+				"test_id": "hard-003",
+				"hook_config": "forced-eval",
+				"query": "How should I organize my SvelteKit routes that call server functions?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-remote-functions",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 9267
+			},
+			{
+				"test_id": "hard-004",
+				"hook_config": "forced-eval",
+				"query": "My component re-renders too much, how do I fix the reactivity?",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8428
+			},
+			{
+				"test_id": "hard-005",
+				"hook_config": "forced-eval",
+				"query": "How do I get URL parameters from the current page?",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": ["sveltekit-structure"],
+				"activated": true,
+				"correct": false,
+				"latency_ms": 7938
+			},
+			{
+				"test_id": "hard-006",
+				"hook_config": "forced-eval",
+				"query": "Where should I put my database queries in a SvelteKit project?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-remote-functions",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8921
+			},
+			{
+				"test_id": "hard-007",
+				"hook_config": "forced-eval",
+				"query": "I want to call a function on the backend without writing an API route",
+				"expected_skill": "sveltekit-remote-functions",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-remote-functions"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 25556
+			},
+			{
+				"test_id": "hard-008",
+				"hook_config": "forced-eval",
+				"query": "Build me a SvelteKit page with a form that updates reactive state on submit",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"svelte-runes",
+					"sveltekit-data-flow",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8537
+			},
+			{
+				"test_id": "hard-009",
+				"hook_config": "forced-eval",
+				"query": "Set up a SvelteKit route with a layout and a remote function that returns user data",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"svelte-runes",
+					"sveltekit-data-flow",
+					"sveltekit-remote-functions",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 9710
+			},
+			{
+				"test_id": "hard-010",
+				"hook_config": "forced-eval",
+				"query": "Create a dashboard page with server-loaded data using $state for client filtering",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"svelte-components",
+					"svelte-runes",
+					"sveltekit-data-flow",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 10382
+			},
+			{
+				"test_id": "hard-011",
+				"hook_config": "forced-eval",
+				"query": "svelte 5 runes help pls",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7689
+			},
+			{
+				"test_id": "hard-012",
+				"hook_config": "forced-eval",
+				"query": "I saw a talk about signals in Svelte, how do I use them in my app?",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 10264
+			},
+			{
+				"test_id": "hard-013",
+				"hook_config": "forced-eval",
+				"query": "How does SvelteKit handle the request/response lifecycle?",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8912
+			},
+			{
+				"test_id": "hard-014",
+				"hook_config": "forced-eval",
+				"query": "What is the Svelte equivalent of React Server Components?",
+				"expected_skill": "sveltekit-remote-functions",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-remote-functions",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 25759
+			},
+			{
+				"test_id": "hard-015",
+				"hook_config": "forced-eval",
+				"query": "Can I RPC from client to server in SvelteKit?",
+				"expected_skill": "sveltekit-remote-functions",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-remote-functions"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8985
+			},
+			{
+				"test_id": "hard-016",
+				"hook_config": "forced-eval",
+				"query": "How do I center a div in CSS?",
+				"expected_skill": "none",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 10288
+			},
+			{
+				"test_id": "hard-017",
+				"hook_config": "forced-eval",
+				"query": "Write a Python script to sort a list of numbers",
+				"expected_skill": "none",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 10657
+			},
+			{
+				"test_id": "hard-018",
+				"hook_config": "forced-eval",
+				"query": "How do I set up a REST API with Express.js?",
+				"expected_skill": "none",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 15569
+			},
+			{
+				"test_id": "hard-019",
+				"hook_config": "forced-eval",
+				"query": "Explain the difference between let and const in JavaScript",
+				"expected_skill": "none",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 15391
+			},
+			{
+				"test_id": "hard-020",
+				"hook_config": "forced-eval",
+				"query": "How do I deploy a Next.js app to Vercel?",
+				"expected_skill": "none",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 14249
+			},
+			{
+				"test_id": "hard-021",
+				"hook_config": "forced-eval",
+				"query": "My SvelteKit app has a flicker on navigation, data loads twice",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8680
+			},
+			{
+				"test_id": "hard-022",
+				"hook_config": "forced-eval",
+				"query": "I need to share a counter between two Svelte components without props",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8142
+			},
+			{
+				"test_id": "hard-023",
+				"hook_config": "forced-eval",
+				"query": "How do I make a SvelteKit app work offline with prerendering?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"svelte-deployment",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 26671
+			},
+			{
+				"test_id": "hard-024",
+				"hook_config": "forced-eval",
+				"query": "Whats the best way to handle authentication middleware in SvelteKit?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": ["sveltekit-structure"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 8404
+			}
+		]
+	},
+	{
+		"hook_config": "llm-eval",
+		"total_tests": 24,
+		"activated_count": 21,
+		"correct_count": 16,
+		"activation_rate": 0.875,
+		"accuracy_rate": 0.6666666666666666,
+		"avg_latency_ms": 9319.666666666666,
+		"results": [
+			{
+				"test_id": "hard-001",
+				"hook_config": "llm-eval",
+				"query": "How do I manage state across pages in my SvelteKit app?",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["sveltekit-data-flow", "svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7111
+			},
+			{
+				"test_id": "hard-002",
+				"hook_config": "llm-eval",
+				"query": "I need to fetch data and make it reactive in my Svelte 5 component",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"svelte-runes",
+					"sveltekit-data-flow",
+					"svelte-components"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 6899
+			},
+			{
+				"test_id": "hard-003",
+				"hook_config": "llm-eval",
+				"query": "How should I organize my SvelteKit routes that call server functions?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 20907
+			},
+			{
+				"test_id": "hard-004",
+				"hook_config": "llm-eval",
+				"query": "My component re-renders too much, how do I fix the reactivity?",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7718
+			},
+			{
+				"test_id": "hard-005",
+				"hook_config": "llm-eval",
+				"query": "How do I get URL parameters from the current page?",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 20982
+			},
+			{
+				"test_id": "hard-006",
+				"hook_config": "llm-eval",
+				"query": "Where should I put my database queries in a SvelteKit project?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"sveltekit-structure",
+					"sveltekit-data-flow"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7515
+			},
+			{
+				"test_id": "hard-007",
+				"hook_config": "llm-eval",
+				"query": "I want to call a function on the backend without writing an API route",
+				"expected_skill": "sveltekit-remote-functions",
+				"activated_skills": ["sveltekit-remote-functions"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 5861
+			},
+			{
+				"test_id": "hard-008",
+				"hook_config": "llm-eval",
+				"query": "Build me a SvelteKit page with a form that updates reactive state on submit",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"svelte-components",
+					"sveltekit-data-flow",
+					"svelte-runes"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 12101
+			},
+			{
+				"test_id": "hard-009",
+				"hook_config": "llm-eval",
+				"query": "Set up a SvelteKit route with a layout and a remote function that returns user data",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"sveltekit-structure",
+					"sveltekit-remote-functions",
+					"svelte-components"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7325
+			},
+			{
+				"test_id": "hard-010",
+				"hook_config": "llm-eval",
+				"query": "Create a dashboard page with server-loaded data using $state for client filtering",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"sveltekit-data-flow",
+					"sveltekit-structure",
+					"svelte-runes",
+					"svelte-components"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 21872
+			},
+			{
+				"test_id": "hard-011",
+				"hook_config": "llm-eval",
+				"query": "svelte 5 runes help pls",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 6503
+			},
+			{
+				"test_id": "hard-012",
+				"hook_config": "llm-eval",
+				"query": "I saw a talk about signals in Svelte, how do I use them in my app?",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7119
+			},
+			{
+				"test_id": "hard-013",
+				"hook_config": "llm-eval",
+				"query": "How does SvelteKit handle the request/response lifecycle?",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"sveltekit-structure",
+					"sveltekit-data-flow"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 6990
+			},
+			{
+				"test_id": "hard-014",
+				"hook_config": "llm-eval",
+				"query": "What is the Svelte equivalent of React Server Components?",
+				"expected_skill": "sveltekit-remote-functions",
+				"activated_skills": [
+					"research",
+					"svelte-components",
+					"sveltekit-structure"
+				],
+				"activated": true,
+				"correct": false,
+				"latency_ms": 7566
+			},
+			{
+				"test_id": "hard-015",
+				"hook_config": "llm-eval",
+				"query": "Can I RPC from client to server in SvelteKit?",
+				"expected_skill": "sveltekit-remote-functions",
+				"activated_skills": ["sveltekit-remote-functions"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7675
+			},
+			{
+				"test_id": "hard-016",
+				"hook_config": "llm-eval",
+				"query": "How do I center a div in CSS?",
+				"expected_skill": "none",
+				"activated_skills": ["research"],
+				"activated": true,
+				"correct": false,
+				"latency_ms": 6716
+			},
+			{
+				"test_id": "hard-017",
+				"hook_config": "llm-eval",
+				"query": "Write a Python script to sort a list of numbers",
+				"expected_skill": "none",
+				"activated_skills": [
+					"python-scripting",
+					"python-sorting",
+					"python-list-manipulation"
+				],
+				"activated": true,
+				"correct": false,
+				"latency_ms": 6788
+			},
+			{
+				"test_id": "hard-018",
+				"hook_config": "llm-eval",
+				"query": "How do I set up a REST API with Express.js?",
+				"expected_skill": "none",
+				"activated_skills": ["research"],
+				"activated": true,
+				"correct": false,
+				"latency_ms": 6376
+			},
+			{
+				"test_id": "hard-019",
+				"hook_config": "llm-eval",
+				"query": "Explain the difference between let and const in JavaScript",
+				"expected_skill": "none",
+				"activated_skills": [],
+				"activated": false,
+				"correct": false,
+				"latency_ms": 11374
+			},
+			{
+				"test_id": "hard-020",
+				"hook_config": "llm-eval",
+				"query": "How do I deploy a Next.js app to Vercel?",
+				"expected_skill": "none",
+				"activated_skills": ["research"],
+				"activated": true,
+				"correct": false,
+				"latency_ms": 6443
+			},
+			{
+				"test_id": "hard-021",
+				"hook_config": "llm-eval",
+				"query": "My SvelteKit app has a flicker on navigation, data loads twice",
+				"expected_skill": "sveltekit-data-flow",
+				"activated_skills": [
+					"sveltekit-structure",
+					"sveltekit-data-flow",
+					"svelte-runes"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7603
+			},
+			{
+				"test_id": "hard-022",
+				"hook_config": "llm-eval",
+				"query": "I need to share a counter between two Svelte components without props",
+				"expected_skill": "svelte-runes",
+				"activated_skills": ["svelte-components", "svelte-runes"],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 9570
+			},
+			{
+				"test_id": "hard-023",
+				"hook_config": "llm-eval",
+				"query": "How do I make a SvelteKit app work offline with prerendering?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"svelte-deployment",
+					"sveltekit-structure",
+					"research"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7632
+			},
+			{
+				"test_id": "hard-024",
+				"hook_config": "llm-eval",
+				"query": "Whats the best way to handle authentication middleware in SvelteKit?",
+				"expected_skill": "sveltekit-structure",
+				"activated_skills": [
+					"sveltekit-structure",
+					"sveltekit-data-flow"
+				],
+				"activated": true,
+				"correct": true,
+				"latency_ms": 7026
+			}
+		]
+	}
+]
