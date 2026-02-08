@@ -490,7 +490,7 @@ export const checkout = form(schema, async (data) => {
 		invalid.quantity('Not enough stock available');
 	}
 
-	if (!await validateCoupon(data.coupon)) {
+	if (!(await validateCoupon(data.coupon))) {
 		// Another field error
 		invalid.coupon('Invalid or expired coupon');
 	}
